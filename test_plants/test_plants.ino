@@ -3,12 +3,14 @@ int valores[numSensores];
 String Msg;
 
 #define pumpPin 6
+#define powerPin 7
 
 void setup() {
 
   Serial.begin(9600);
   pinMode(pumpPin, OUTPUT);
   digitalWrite(pumpPin, LOW);
+  digitalWrite(powerPin, LOW);
 
 }
 
@@ -16,15 +18,18 @@ void setup() {
 void loop() {
 
   checkSerialOperations();
-  sendAnalogJson();
 
-  delay(500);
+  sendAnalogJson();
 
   // Generar modo auto
   if(valores[0]<80 &&  valores[1]<80 && valores[2]<80){
     digitalWrite(pumpPin, HIGH);
     delay(100);
     }
+  else{
+    digitalWrite(pumpPin, LOW);
+    delay(100);
+  }
 
 
 }
@@ -33,7 +38,10 @@ void loop() {
 // Send analog sensor data as json
 void sendAnalogJson(){
   // {"Analog inputs":[A0, A1, A2]}
+  turnOnSensors();
+  delay(500);
   readAnalogSensors();
+  turnOffSensors();
 
   Serial.print("{'Analog inputs':[");
 
@@ -55,6 +63,14 @@ void readAnalogSensors() {
     valores[i] = analogRead(A0 + i);
     valores[i] = map(valores[i], 0, 1023, 0, 100);// Lee el valor del pin A0, A1, A2, etc.
   }
+}
+
+void turnOnSensors() {
+  digitalWrite(powerPin, HIGH);
+}
+
+void turnOffSensors() {
+  digitalWrite(powerPin, LOW);
 }
 
 void checkSerialOperations()
