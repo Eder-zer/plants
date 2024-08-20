@@ -6,7 +6,7 @@ import numpy as np
 import cv2 as cv
 from datetime import datetime
 
-ser = serial.Serial('COM6', timeout=15)  # open serial port
+ser = serial.Serial('COM6', timeout=360)  # open serial port
 while True:
     try:
         msg = ser.readline().decode(encoding="utf-8", errors="ignore")
@@ -29,11 +29,11 @@ while True:
             print("Can't receive frame (stream end?). Exiting ...")
             break
         date = datetime.now()
-        date = f"{date}".replace('.','-').replace(' ','').replace(':','-')
+        date = f"{date}".replace('.','-').replace(' ','-').replace(':','-')
         name = f"{date}.jpg"
         print(name)
-        #cv.imwrite(name, frame)
-        count += 1
+        cv.imwrite(name, frame)
+        count += 11
 
         # When everything done, release the capture
         cap.release()

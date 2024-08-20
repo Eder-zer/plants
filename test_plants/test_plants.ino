@@ -1,7 +1,7 @@
 const int numSensores = 3; // Cambia según la cantidad de sensores que tengas
 int valores[numSensores];
 String Msg;
-int master_delay = 5000;
+int master_delay = 30000;
 
 #define pumpPin 6
 #define powerPin 23
