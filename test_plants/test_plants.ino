@@ -1,9 +1,10 @@
 const int numSensores = 3; // Cambia según la cantidad de sensores que tengas
 int valores[numSensores];
 String Msg;
+int master_delay = 5000;
 
 #define pumpPin 6
-#define powerPin 7
+#define powerPin 23
 
 void setup() {
 
@@ -38,20 +39,20 @@ void loop() {
 // Send analog sensor data as json
 void sendAnalogJson(){
   // {"Analog inputs":[A0, A1, A2]}
+  // As for is it today 
   turnOnSensors();
-  delay(500);
+  delay(master_delay);
   readAnalogSensors();
   turnOffSensors();
 
-  Serial.print("{'Analog inputs':[");
-
+  Serial.print("{'wavy_leaf':");
   Serial.print(valores[0]);
-  Serial.print(",");
+  Serial.print(",'drosera_spatulata':");
   Serial.print(valores[1]);
-  Serial.print(",");
+  Serial.print(",'venus_fly_trap':");
   Serial.print(valores[2]);
 
-  Serial.print("]}");
+  Serial.print("}");
 
   Serial.println();
 
@@ -61,7 +62,7 @@ void sendAnalogJson(){
 void readAnalogSensors() {
     for (int i = 0; i < numSensores; i++) {
     valores[i] = analogRead(A0 + i);
-    valores[i] = map(valores[i], 0, 1023, 0, 100);// Lee el valor del pin A0, A1, A2, etc.
+    valores[i] = map(valores[i], 0, 1023, 100, 0);// Lee el valor del pin A0, A1, A2, etc.
   }
 }
 
